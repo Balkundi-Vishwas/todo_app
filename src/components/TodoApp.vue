@@ -14,8 +14,8 @@
         <tr>
           <th scope="col">Task</th>
           <th scope="col" style="width: 120px">Status</th>
-          <th scope="col" class="text-center">#</th>
-          <th scope="col" class="text-center">#</th>
+          <th scope="col" class="text-center">Delete</th>
+          <th scope="col" class="text-center">Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -40,12 +40,12 @@
           </td>
           <td class="text-center">
             <div @click="deleteTask(index)">
-              <span class="btn btn-danger rounded-2 pointer">Delete</span>
+              <span class="fa fa-trash pointer"></span>
             </div>
           </td>
           <td class="text-center">
             <div @click="editTask(index)">
-              <span class="btn btn-primary rounded-2 pointer">Edit</span>
+              <span class="fa fa-pen pointer"></span>
             </div>
           </td>
         </tr>
@@ -145,7 +145,7 @@ export default {
 .dropbtn {
   background-color: #4CAF50;
   color: white;
-  padding: 6px;
+  padding: 2px 8px;
   font-size: 16px;
   border: none;
   cursor: pointer;
@@ -177,7 +177,7 @@ export default {
 /* Links inside the dropdown */
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
+  padding: 12px 12px;
   text-decoration: none;
   display: block;
 }

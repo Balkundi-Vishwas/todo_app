@@ -1,8 +1,10 @@
 <template>
   <div class="container" style="max-width: 600px">
-    <h2 class="text-center mt-5">Todo App</h2>
-
-    <div class="d-flex mt-5">
+    <h1 class="text-center m-5">Todo App</h1>
+    <div   class="d-flex">
+        <h5 v-show ="isVisible">you are now editting task no : {{ tno + 1 }}</h5>
+    </div>
+    <div class="d-flex">
       <input type="text" v-model="task" placeholder="Enter task" class="w-100 form-control" />
       <button class="btn btn-success rounded-2" @click="submitTask">
         SUBMIT
@@ -12,6 +14,7 @@
     <table class="table table-bordered mt-5">
       <thead>
         <tr>
+          <th scope="col">s.no</th>
           <th scope="col">Task</th>
           <th scope="col" style="width: 120px">Status</th>
           <th scope="col" class="text-center">Delete</th>
@@ -20,6 +23,9 @@
       </thead>
       <tbody>
         <tr v-for="(task, index) in tasks" :key="index">
+          <td>
+            <span>{{ index+1 }}</span>
+          </td>
           <td>
             <span :class="{ 'text-decoration: line-through': task.status === 'finished' }">
               {{ task.name }}
@@ -31,9 +37,9 @@
             </span> -->
             <div id="app">
               <div class="dropdown">
-                <button class="dropbtn" @click="toggleDropdown">{{ task.status }}</button>
+                <button class="dropbtn" :style="{ backgroundColor: bgColor(index) }" @click="toggleDropdown(index)">{{ task.status }}</button>
                 <div class="dropdown-content" v-show="isOpen">
-                  <a href="#" @click="selectItem(status, index)" v-for="status in statuses">{{ status }}</a>
+                  <a href="#" @click="selectItem(status, index)"  v-for="status in statuses">{{ status }}</a>
                 </div>
               </div>
             </div>
@@ -65,11 +71,14 @@ export default {
     return {
       task: "",
       editedTask: null,
+      isVisible: false,
       isOpen: false, // Flag to control dropdown visibility
+      // bgColor:'blue'
+      tno : 0,
       statuses: ["to-do", "in-progress", "finished"],
       tasks: [
         {
-          name: "Steal bananas from the supermarket.",
+          name: "complete the homework within the specified time.",
           status: "to-do",
         },
       ],
@@ -83,7 +92,7 @@ export default {
     capitalizeFirstChar(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
-    toggleDropdown() {
+    toggleDropdown(index) {
       this.isOpen = !this.isOpen;
     },
     // Update selected item and close dropdown
@@ -92,9 +101,19 @@ export default {
       this.tasks[index].status = item
       this.isOpen = false; // Close dropdown after selecting an item
     },
+    bgColor(index){
+      if(this.tasks[index].status === 'to-do')
+      return 'blue'
+      else if(this.tasks[index].status === 'in-progress')
+      return 'red'
+      else
+      return'green'
+    },
     editTask(index) {
       this.task = this.tasks[index].name
       this.editedTask = index
+      this.isVisible = !this.isVisible;
+      this.tno = index
     },
 
     changeStatus(index) {
@@ -115,6 +134,7 @@ export default {
       else if (this.editedTask != null) {
         this.tasks[this.editedTask].name = this.task;
         this.editedTask = null;
+        this.isVisible = !this.isVisible;
       }
       else {
         this.tasks.push({
@@ -124,6 +144,7 @@ export default {
       }
 
       this.task = "";
+      // tno=this.index;
     },
   },
 };
@@ -143,7 +164,7 @@ export default {
 }
 
 .dropbtn {
-  background-color: #4CAF50;
+  /* background-color: #4CAF50; */
   color: white;
   padding: 2px 8px;
   font-size: 16px;
